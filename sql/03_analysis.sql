@@ -292,3 +292,17 @@ WHERE social_media_hours IS NOT NULL
 GROUP BY social_category
 ORDER BY avg_focus DESC;
 
+--- влияние шагов на настроение
+
+SELECT 
+    CASE 
+        WHEN daily_steps < 3000 THEN '<3k'
+        WHEN daily_steps < 7000 THEN '3-7k'
+        WHEN daily_steps < 11000 THEN '7-11k'
+        ELSE '>11k'
+    END as steps_category,
+    COUNT(*) as days,
+    ROUND(AVG(mood), 2) as avg_mood
+FROM daily_summary
+GROUP BY steps_category
+ORDER BY MIN(daily_steps)
